@@ -1,0 +1,20 @@
+# folders
+
+__pycache__/
+instance/
+migrations/
+
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+myenv/
+
+
+# mac specific files
+.DS_Store
+.AppleDouble
+.LSOverride
