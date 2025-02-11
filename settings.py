@@ -5,12 +5,12 @@ from dotenv import load_dotenv
 load_dotenv()
 
 class Config:
-    SECRET_KEY = os.getenv("SECRET_KEY", "super duper secret key")
+    SECRET_KEY = getenv("SECRET_KEY", "super duper secret key")
 
     # USE THIS FOR LOCAL TESTING (SQLite)
     LOCAL_DB = f"sqlite:///zephyr.db"
 
     # USE THIS FOR SERVER (Production Database from .env)
-    SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL", LOCAL_DB)
+    SQLALCHEMY_DATABASE_URI = getenv("DATABASE_URL", LOCAL_DB)
     
     SQLALCHEMY_TRACK_MODIFICATIONS = False
