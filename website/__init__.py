@@ -4,7 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from .views import views  # Correct relative import
 # from flask_login import LoginManager
 from os import path
-from config import Config  # Import the new config file
+from settings import Config  # Import the new config file
 
 # Initialize Flask extensions
 migrate = Migrate()
