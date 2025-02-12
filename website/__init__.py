@@ -12,7 +12,7 @@ db = SQLAlchemy()
 
 def create_app():
     app = Flask(__name__)
-    app.config.from_object('config.Config')  # Load settings from config.py
+    app.config.from_object(Config) 
     app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {"pool_pre_ping": True}
     db.init_app(app)
     migrate.init_app(app, db)
