@@ -18,7 +18,7 @@ class Config:
     '''
     USE_LOCAL_DB = False
 
-    if USE_LOCAL_DB == True:
+    if USE_LOCAL_DB:
         print("🔹 Using Local SQLite Database")
         SQLALCHEMY_DATABASE_URI = SQLITE_DATABASE_URL # Use SQLite
     else:
