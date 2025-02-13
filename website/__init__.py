@@ -7,43 +7,49 @@ from os import path
 from settings import Config  # Import the new config file
 
 # Initialize Flask extensions
-migrate = Migrate()
-db = SQLAlchemy()
+migrate = Migrate()  # Initialize Flask-Migrate
+db = SQLAlchemy()  # Initialize SQLAlchemy
 
 def create_app():
-    app = Flask(__name__)
     
-    app.config['SECRET_KEY'] = 'super duper secret key'
+    # Create a Flask application instance
+    app = Flask(__name__)  
     
-    app.config.from_object(Config) 
+    # Set the secret key for session management
+    app.config['SECRET_KEY'] = 'super duper secret key'  
     
+    # Load configuration from Config object
+    app.config.from_object(Config)  
     
-    
+    # Initialize SQLAlchemy with the app
     db.init_app(app)
-    migrate.init_app(app, db)
+     # Initialize Flask-Migrate with the app and database  
+    migrate.init_app(app, db) 
 
-    from .views import views
-    # from .auth import auth
+    # Import views blueprint
+    from .views import views  
+    # from .auth import auth  # Import auth blueprint (commented out)
 
-    # Register blueprints
-    app.register_blueprint(views, url_prefix='/')
-    # app.register_blueprint(auth, url_prefix='/')
+    # Register views blueprint with the app
+    app.register_blueprint(views, url_prefix='/')  
+    # app.register_blueprint(auth, url_prefix='/')  # Register auth blueprint with the app (commented out)
 
-    # Initialize database before returning the app
-    create_database(app)
+    create_database(app)  # Create the database if it does not exist
 
-    # # Set up login manager
-    # login_manager = LoginManager()
-    # login_manager.login_view = 'auth.login'
-    # login_manager.init_app(app)
+    # login_manager = LoginManager()  # Initialize LoginManager (commented out)
+    # login_manager.login_view = 'auth.login'  # Set the login view for LoginManager (commented out)
+    # login_manager.init_app(app)  # Initialize LoginManager with the app (commented out)
 
-    return app  # Return the configured Flask app
+    # Return the configured Flask app
+    return app  
 
-# Create database if it does not exist
 def create_database(app):
+    # Define the database path
    db_path = path.join("instance", "zephyr.db")
-   if Config.USE_LOCAL_DB and not path.exists(db_path):
+   # Check if local DB should be used and if it doesn't exist  
+   if Config.USE_LOCAL_DB and not path.exists(db_path):  
         with app.app_context():
+            # Create all database tables
             db.create_all()
-            print('Created Local SQLite Database! 🎉')
-
+            # Print success message  
+            print('Created Local SQLite Database! 🎉')  
