@@ -16,7 +16,7 @@ class Config:
     TRUE FOR LOCAL TESTING
     FALSE FOR SERVER TESTING
     '''
-    USE_LOCAL_DB = False
+    USE_LOCAL_DB = os.getenv("USE_LOCAL_DB", "False").strip().lower() in ("true", "1", "t")
 
     if USE_LOCAL_DB:
         print("🔹 Using Local SQLite Database")
