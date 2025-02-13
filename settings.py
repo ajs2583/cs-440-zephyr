@@ -12,9 +12,9 @@ class Config:
     # Pull Database URLs from .env
     SQLITE_DATABASE_URL = getenv("SQLITE_DATABASE_URL")  # Local SQLite
     POSTGRES_DATABASE_URL = getenv("POSTGRES_DATABASE_URL")  # Render PostgreSQL
+    
     # Pull Boolean for use of local or server testing from .env
     USE_LOCAL_DB = getenv("USE_LOCAL_DB", "False").strip().lower() in ("true", "1", "t")
-    # print(USE_LOCAL_DB)
     
     # If true use local 
     if USE_LOCAL_DB:
