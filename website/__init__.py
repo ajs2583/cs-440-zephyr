@@ -12,8 +12,13 @@ db = SQLAlchemy()
 
 def create_app():
     app = Flask(__name__)
+    
+    app.config['SECRET_KEY'] = 'super duper secret key'
+    
     app.config.from_object(Config) 
-    app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {"pool_pre_ping": True}
+    
+    
+    
     db.init_app(app)
     migrate.init_app(app, db)
 
@@ -36,8 +41,9 @@ def create_app():
 
 # Create database if it does not exist
 def create_database(app):
-    db_path = path.join("instance", "zephyr.db")
-    if not path.exists(db_path):
+   db_path = path.join("instance", "zephyr.db")
+   if Config.USE_LOCAL_DB and not path.exists(db_path):
         with app.app_context():
             db.create_all()
-            print('Created Database! 🎉')
+            print('Created Local SQLite Database! 🎉')
+
