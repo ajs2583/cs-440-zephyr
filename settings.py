@@ -1,16 +1,35 @@
-from os import getenv
+import os
 from dotenv import load_dotenv
 
-# Load environment variables from .env file
+# Always load .env to ensure environment variables are available
 load_dotenv()
 
 class Config:
-    SECRET_KEY = getenv("SECRET_KEY", "super duper secret key")
+    # Secret Key (used for session security, CSRF protection, etc.)
+    SECRET_KEY = os.getenv("SECRET_KEY")
 
-    # USE THIS FOR LOCAL TESTING (SQLite)
-    LOCAL_DB = f"sqlite:///zephyr.db"
+    # Database URLs
+    SQLITE_DATABASE_URL = os.getenv("SQLITE_DATABASE_URL")  # Local SQLite
+    POSTGRES_DATABASE_URL = os.getenv("POSTGRES_DATABASE_URL")  # Render PostgreSQL
 
-    # USE THIS FOR SERVER (Production Database from .env)
-    SQLALCHEMY_DATABASE_URI = getenv("DATABASE_URL", LOCAL_DB)
-    
+    '''
+    TRUE FOR LOCAL TESTING
+    FALSE FOR SERVER TESTING
+    '''
+    USE_LOCAL_DB = True
+
+    if USE_LOCAL_DB:
+        print("🔹 Using Local SQLite Database")
+        SQLALCHEMY_DATABASE_URI = SQLITE_DATABASE_URL # Use SQLite
+    else:
+        print("🚀 Using Render PostgreSQL Database")
+        SQLALCHEMY_DATABASE_URI = POSTGRES_DATABASE_URL
+        
+        
+
+    # SQLAlchemy settings
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SQLALCHEMY_ENGINE_OPTIONS = {"pool_pre_ping": True}  # Prevents connection drop issues
+
+    
+    
