@@ -16,7 +16,7 @@ class Config:
     TRUE FOR LOCAL TESTING
     FALSE FOR SERVER TESTING
     '''
-    USE_LOCAL_DB = True
+    USE_LOCAL_DB = False
 
     if USE_LOCAL_DB:
         print("🔹 Using Local SQLite Database")
