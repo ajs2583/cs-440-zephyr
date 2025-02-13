@@ -16,13 +16,14 @@ class Config:
     TRUE FOR LOCAL TESTING
     FALSE FOR SERVER TESTING
     '''
-    USE_LOCAL_DB = os.getenv("USE_LOCAL_DB", "False").strip().lower() in ("true", "1", "t")
-    if USE_LOCAL_DB:
-        print("🔹 Using Local SQLite Database")
-        SQLALCHEMY_DATABASE_URI = SQLITE_DATABASE_URL # Use SQLite
-    else:
-        print("🚀 Using Render PostgreSQL Database")
-        SQLALCHEMY_DATABASE_URI = POSTGRES_DATABASE_URL
+    SQLALCHEMY_DATABASE_URI = SQLITE_DATABASE_URL
+    # USE_LOCAL_DB = os.getenv("USE_LOCAL_DB", "False").strip().lower() in ("true", "1", "t")
+    # if USE_LOCAL_DB:
+    #     print("🔹 Using Local SQLite Database")
+    #     SQLALCHEMY_DATABASE_URI = SQLITE_DATABASE_URL # Use SQLite
+    # else:
+    #     print("🚀 Using Render PostgreSQL Database")
+    #     SQLALCHEMY_DATABASE_URI = POSTGRES_DATABASE_URL
         
         
 
