@@ -34,6 +34,7 @@ def create_app():
     app.register_blueprint(views, url_prefix='/')  
     # app.register_blueprint(auth, url_prefix='/')  # Register auth blueprint with the app (commented out)
 
+    from .models import User, FlightSearch, FlightDeal
     create_database(app)  # Create the database if it does not exist
 
     # login_manager = LoginManager()  # Initialize LoginManager (commented out)

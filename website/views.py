@@ -27,6 +27,7 @@ def search_flights():
     airport_full = request.form.get("airport")
     date = request.form.get("date")
     max_price = request.form.get("price")
+    dest_country = request.form.get("countries")
 
     # Check if required fields are filled
     if not airport_full or not date:
@@ -35,6 +36,9 @@ def search_flights():
 
     # Extract IATA code from the airport string safely
     airport_code = airport_full.split("(")[-1].replace(")", "").strip()
+
+    # extract the country code good
+    dest_country = dest_country.split("(")[-1].replace(")", "").strip()
     
     # Ensure the extracted IATA code is valid (3 characters long)
     if len(airport_code) != 3:
@@ -45,8 +49,9 @@ def search_flights():
     print(f"Extracted Airport Code: {airport_code}")
     print(f"Using Date: {date}")
     print(f"Using Max Price: {max_price}")
+    print(f"Using Dest Country: {dest_country}")
 
     # Fetch flight deals using the extracted IATA code, date, and max price
-    flights = get_flight_deals(airport_code, date, max_price)
+    flights = get_flight_deals(airport_code, date, int(max_price), dest_country)
     # Render the home page with the list of flight deals
     return render_template("index.html", flights=flights)
