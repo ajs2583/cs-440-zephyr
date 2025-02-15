@@ -1,4 +1,4 @@
-from amadeus import Client
+from amadeus import Client, ResponseError
 from os import getenv
 
 # Initialize Amadeus API client with credentials from environment variables
@@ -28,7 +28,7 @@ def get_airport_suggestions(query):
         print("Error fetching airports:", e)
         return []
 
-def get_flight_deals(origin, date, max_price):
+def get_flight_deals(origin, date, max_price, country_dest):
     """Fetches the cheapest flight deals from Amadeus API."""
     try:
         # Validate the origin IATA code
@@ -37,18 +37,25 @@ def get_flight_deals(origin, date, max_price):
             return []
 
         # Set a default maximum price if none is provided
-        if not max_price:
-            max_price = 500  # Default fallback value
+        max_price = int(max_price) if max_price and str(max_price).isdigit() else 500
 
+        airports = get_airports(country_dest)
+
+        if len(airports) == 0:
+            print("No airports were found for country:", country_dest)
+            return []
+        return_list = []
         # Make a request to the Amadeus API to get flight deals
-        response = amadeus.shopping.flight_offers_search.get(
-            originLocationCode=origin,
-            departureDate=date,
-            maxPrice=int(max_price),  # Ensure integer type
-            adults=1
-        )
-
-        print("Full Flight API Response:", response.result)                     #! Debugging
+        for airport in airports:
+            destination = airport["iataCode"]
+            response = amadeus.shopping.flight_offers_search.get(
+                originLocationCode=origin,
+                destinationLocationCode=destination,
+                departureDate=date,
+                maxPrice=int(max_price),  # Ensure integer type
+                adults=1
+            )
+            return_list.append(response)
 
         #! Check for errors in the API response
         if "errors" in response.result:
@@ -64,12 +71,44 @@ def get_flight_deals(origin, date, max_price):
                 "price": offer["price"]["total"],
                 "link": f"https://www.amadeus.com/book/{offer['id']}"
             }
-            for offer in response.data
+            for each_response in return_list
+            for offer in each_response.data
         ]
     except Exception as e:
+        import traceback
         # Handle any exceptions that occur during the API request
-        print("Error fetching flights:", e)
+        print("Outer Err fetching flights:", e)
+        traceback.print_exc()
         return []
+        
 '''
  TODO This code is returning 400 (unaccepted request) but still is parsing airport data, maybe bad request/bad parameters?
 '''
+
+def get_airports(country):
+    """Fetches a list of airports for a given city or country."""
+    try:
+        response = amadeus.reference_data.locations.get(
+            keyword=country,  # City name or country code
+            subType="AIRPORT"  # Only fetch airports, not cities
+        )
+        
+        airports = [
+            {
+                "name": location["name"],
+                "iataCode": location["iataCode"],
+                "city": location["address"]["cityName"],
+                "country": location["address"]["countryCode"]
+            }
+            for location in response.data
+        ]
+        new_aps = []
+        for each_airport in airports:
+            if each_airport["country"] == country:
+                new_aps.append(each_airport)
+        
+        return new_aps
+
+    except ResponseError as error:
+        print("Error fetchingasd airports:", error)
+        return []

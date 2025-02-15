@@ -36,6 +36,20 @@
                 <input type="number" id="price" name="price" class="form-control" min="0" required>
             </div>
 
+            <div class="mb-3">
+                <!-- Country Input field -->
+                <label for="destination" class="form-label">Select Destination Country:</label>
+                <select name="countries" id="countries">
+                    <option value="US">United States</option>
+                    <option value="FR">France</option>
+                    <option value="BR">Brazil</option>
+                    <option value="IT">Italy</option>
+                    <option value="ES">Spain</option>
+                    <option value="GB">United Kingdom</option>
+                    <option value="JP">Japan</option>
+                </select>
+            </div>
+
             <!-- Submit button -->
             <button type="submit" class="btn btn-primary w-100">Find Flights</button>
         </form>
@@ -50,7 +64,8 @@
                             <div class="card-body">
                                 <!-- Flight details -->
                                 <h5 class="card-title">{{ flight.departure }} → {{ flight.destination }}</h5>
-                                <p class="card-text"><strong>Departure Date:</strong> {{ flight.departure_date }}</p>
+                                <p class="card-text"><strong>Departure Date:</strong> {{ flight.departure_date.split('T')[0] }}</p>
+                                <p class="card-text"><strong>Departure Time:</strong> {{ flight.departure_date.split('T')[1] }}</p>
                                 <p class="card-text"><strong>Price:</strong> ${{ flight.price }}</p>
                                 <!-- Link to book the flight -->
                                 <a href="{{ flight.link }}" class="btn btn-success" target="_blank">Book Now</a>
