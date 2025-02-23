@@ -32,7 +32,7 @@
 
             <div class="mb-3">
                 <!-- Price input field -->
-                <label for="price" class="form-label">Max Price:</label>
+                <label for="price" class="form-label">Max Price (USD):</label>
                 <input type="number" id="price" name="price" class="form-control" min="0" required>
             </div>
 
@@ -52,6 +52,12 @@
 
             <!-- Submit button -->
             <button type="submit" class="btn btn-primary w-100">Find Flights</button>
+            <div id="loading" class="text-center mt-3" style="display: none;">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            <p>Searching flights...</p>
+            </div>
         </form>
 
         <!-- Display available flights if any -->
@@ -67,8 +73,12 @@
                                 <p class="card-text"><strong>Departure Date:</strong> {{ flight.departure_date.split('T')[0] }}</p>
                                 <p class="card-text"><strong>Departure Time:</strong> {{ flight.departure_date.split('T')[1] }}</p>
                                 <p class="card-text"><strong>Price:</strong> ${{ flight.price }}</p>
-                                <!-- Link to book the flight -->
-                                <a href="{{ flight.link }}" class="btn btn-success" target="_blank">Book Now</a>
+                                <!-- If a valid booking URL is provided, display the button -->
+                                {% if flight.link %}
+                                    <a href="{{ flight.link }}" class="btn btn-success" target="_blank">Book Now</a>
+                                {% else %}
+                                    <button class="btn btn-secondary" disabled>Booking Not Available</button>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
@@ -110,7 +120,14 @@
                     $("#airport-dropdown").hide();
                 }
             });
+        // Handle form submission to show loading animation
+        $("form").on("submit", function() {
+            // Disable the submit button to prevent multiple submissions
+            $(this).find('button[type="submit"]').prop("disabled", true);
+            // Show the loading spinner
+            $("#loading").show();
         });
+    });
     </script>
 
     <!-- Bootstrap JS for additional functionality -->

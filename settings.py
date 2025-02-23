@@ -13,10 +13,10 @@ class Config:
     SQLITE_DATABASE_URL = getenv("SQLITE_DATABASE_URL")  # Local SQLite
     POSTGRES_DATABASE_URL = getenv("POSTGRES_DATABASE_URL")  # Render PostgreSQL
     
-    '''
-    False = Server testing
-    True = Local Testing
-    '''
+    """
+    ! False = Server testing
+    ? True = Local Testing
+    """
     USE_LOCAL_DB = False
     
     # If true use local 

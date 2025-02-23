@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, jsonify
+from flask import Blueprint, render_template, request, jsonify, redirect
 from .services import get_airport_suggestions, get_flight_deals
 
 # Create a Blueprint named 'views' for organizing routes
@@ -24,9 +24,13 @@ def get_airports():
 @views.route("/search_flights", methods=["POST"])
 def search_flights():
     # Get form data from the request
+    # Airport
     airport_full = request.form.get("airport")
+    # Date
     date = request.form.get("date")
+    # Price
     max_price = request.form.get("price")
+    # Destination country 
     dest_country = request.form.get("countries")
 
     # Check if required fields are filled
@@ -55,3 +59,15 @@ def search_flights():
     flights = get_flight_deals(airport_code, date, int(max_price), dest_country)
     # Render the home page with the list of flight deals
     return render_template("index.html", flights=flights)
+
+@views.route("/book/<offer_id>", methods=["GET"])
+def book_flight(offer_id):
+    # Check if the offer_id is a full URL
+    if offer_id.startswith("http"):
+        # Redirect to the full URL if it is
+        return redirect(offer_id)
+    else:
+        # Construct the booking URL using the offer_id
+        booking_url = f"https://www.amadeus.com/book/{offer_id}"
+        # Redirect to the constructed booking URL
+        return redirect(booking_url)
