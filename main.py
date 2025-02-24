@@ -1,7 +1,7 @@
 from website import create_app
-import os 
+from os import getenv
 
-DEBUG_OPTION = os.environ("DEBUG_OPTION")
+DEBUG_OPTION = getenv("DEBUG_OPTION")
 
 # Create app 
 app = create_app()
