@@ -1,10 +1,10 @@
 {% extends "base.html" %}
-{% block title %}Login{% endblock %}
+{% block title %}Sign Up{% endblock %}
 
 {% block content %}
 <div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
     <form method="POST" style="width: 100%; max-width: 400px; padding: 20px; border: 1px solid #ddd; border-radius: 8px; background-color: #f9f9f9;">
-        <h3 class="text-center mb-4">Login</h3>
+        <h3 class="text-center mb-4">Sign Up</h3>
         
         <div class="form-group mb-3">
             <label for="email" class="form-label">Email Address</label>
@@ -18,7 +18,19 @@
             />
         </div>
         
-        <div class="form-group mb-4">
+        <div class="form-group mb-3">
+            <label for="username" class="form-label">Name</label>
+            <input
+                type="text"
+                class="form-control"
+                id="username"
+                name="username" 
+                placeholder="Enter name"
+                required
+            />
+        </div>
+        
+        <div class="form-group mb-3">
             <label for="password" class="form-label">Password</label>
             <input
                 type="password"
@@ -30,8 +42,7 @@
             />
         </div>
         
-        <button type="submit" class="btn btn-primary w-100">Login</button>
+        <button type="submit" class="btn btn-primary w-100">Submit</button>
     </form>
-    
 </div>
 {% endblock %}

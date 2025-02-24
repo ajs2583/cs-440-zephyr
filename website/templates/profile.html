@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="card mt-4">
+        <div class="card-body">
+            <h1 class="card-title">{{ user_profile.name }}'s Profile</h1>
+            <h5>Email</h5>
+            <p>{{ user_profile.email }}</p>
+            <h5>Username</h5>
+            <p>{{ user_profile.name }}</p>
+
+
+            <br>
+
+            {% if is_own_profile %}
+                <h2> This is your Profile</h2>
+
+                    <h5>Saved Deals:</h5>
+                    {% for deal in flightdeals %}
+                        <li>From {{ deal.departure_airport }} to {{deal.destination_airport}} on {{deal.departure_date}}. ${{deal.price}} 
+                            {% if not deal.link %}
+                            (No link available)
+                            {% else %}
+                            ({{deal.link}})
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                    <h5>Search History:</h5>
+                    {% for search in flightsearches %}
+                        <li>From {{ search.departure_airport }} to {{search.destination_country}} on {{search.departure_date}}. Max Budget: ${{search.max_budget}} 
+                        </li>
+                    {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

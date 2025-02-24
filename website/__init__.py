@@ -1,8 +1,7 @@
 from flask import Flask
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
-from .views import views  # Correct relative import
-# from flask_login import LoginManager
+from flask_login import LoginManager
 from os import path
 from settings import Config  # Import the new config file
 
@@ -10,13 +9,17 @@ from settings import Config  # Import the new config file
 migrate = Migrate()  # Initialize Flask-Migrate
 db = SQLAlchemy()  # Initialize SQLAlchemy
 
+DB_NAME = "zephyr.db"
+
 def create_app():
     
     # Create a Flask application instance
     app = Flask(__name__)  
-    
     # Set the secret key for session management
     app.config['SECRET_KEY'] = 'super duper secret key'  
+
+    
+
     
     # Load configuration from Config object
     app.config.from_object(Config)  
@@ -28,19 +31,22 @@ def create_app():
 
     # Import views blueprint
     from .views import views  
-    # from .auth import auth  # Import auth blueprint (commented out)
+    from .auth import auth  # Import auth blueprint (commented out)
 
     # Register views blueprint with the app
     app.register_blueprint(views, url_prefix='/')  
-    # app.register_blueprint(auth, url_prefix='/')  # Register auth blueprint with the app (commented out)
+    app.register_blueprint(auth, url_prefix='/')  # Register auth blueprint with the app (commented out)
 
     from .models import User, FlightSearch, FlightDeal
     create_database(app)  # Create the database if it does not exist
 
-    # login_manager = LoginManager()  # Initialize LoginManager (commented out)
-    # login_manager.login_view = 'auth.login'  # Set the login view for LoginManager (commented out)
-    # login_manager.init_app(app)  # Initialize LoginManager with the app (commented out)
+    login_manager = LoginManager()  # Initialize LoginManager (commented out)
+    login_manager.login_view = 'auth.login'  # Set the login view for LoginManager (commented out)
+    login_manager.init_app(app)  # Initialize LoginManager with the app (commented out)
 
+    @login_manager.user_loader
+    def load_user(id):
+        return User.query.get(int(id)) 
     # Return the configured Flask app
     return app  
 
@@ -54,3 +60,6 @@ def create_database(app):
             db.create_all()
             # Print success message  
             print('Created Local SQLite Database! 🎉')  
+
+
+
