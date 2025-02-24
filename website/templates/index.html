@@ -1,136 +1,134 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <!-- Meta tags for character set and viewport settings -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zephyr Flight Tracker</title>
-    <!-- Bootstrap CSS for styling -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-</head>
-<body>
-    <div class="container mt-5">
-        <!-- Main heading -->
-        <h1 class="text-center">Zephyr Flight Tracker</h1>
-        <p class="text-center">Find the best spontaneous flight deals within the next 60 days!</p>
+{% extends "base.html" %}
+{% block title %}Zephyr Flight Tracker{% endblock %}
 
-        <!-- Flight search form -->
-        <form method="POST" action="{{ url_for('views.search_flights') }}">
-            <div class="mb-3 position-relative">
-                <!-- Airport input field with autocomplete -->
-                <label for="airport" class="form-label">Choose Your Departure Airport:</label>
-                <input type="text" id="airport" name="airport" class="form-control" placeholder="Enter airport name or code" autocomplete="off">
-                <!-- Dropdown for airport suggestions -->
-                <div id="airport-dropdown" class="dropdown-menu w-100" style="display: none;"></div>
+{% block content %}
+<div class="container mt-5">
+    <!-- Main heading -->
+    <h1 class="text-center">Zephyr Flight Tracker</h1>
+    <p class="text-center">Find the best spontaneous flight deals within the next 60 days!</p>
+
+    <!-- Flight search form -->
+    <form method="POST" action="{{ url_for('views.search_flights') }}">
+        <div class="mb-3 position-relative">
+            <!-- Airport input field with autocomplete -->
+            <label for="airport" class="form-label">Choose Your Departure Airport:</label>
+            <input type="text" id="airport" name="airport" class="form-control" placeholder="Enter airport name or code" autocomplete="off">
+            <!-- Dropdown for airport suggestions -->
+            <div id="airport-dropdown" class="dropdown-menu w-100" style="display: none;"></div>
+        </div>
+
+        <div class="mb-3">
+            <!-- Date input field -->
+            <label for="date" class="form-label">Select a Date:</label>
+            <input type="date" id="date" name="date" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <!-- Price input field -->
+            <label for="price" class="form-label">Max Price (USD):</label>
+            <input type="number" id="price" name="price" class="form-control" min="0" required>
+        </div>
+
+        <div class="mb-3">
+            <!-- Country Input field -->
+            <label for="destination" class="form-label">Select Destination Country:</label>
+            <select name="countries" id="countries">
+                <option value="US">United States</option>
+                <option value="FR">France</option>
+                <option value="BR">Brazil</option>
+                <option value="IT">Italy</option>
+                <option value="ES">Spain</option>
+                <option value="GB">United Kingdom</option>
+                <option value="JP">Japan</option>
+            </select>
+        </div>
+
+        <!-- Submit button -->
+        <button type="submit" class="btn btn-primary w-100">Find Flights</button>
+        <div id="loading" class="text-center mt-3" style="display: none;">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
             </div>
+        <p>Searching flights...</p>
+        </div>
+    </form>
 
-            <div class="mb-3">
-                <!-- Date input field -->
-                <label for="date" class="form-label">Select a Date:</label>
-                <input type="date" id="date" name="date" class="form-control" required>
-            </div>
-
-            <div class="mb-3">
-                <!-- Price input field -->
-                <label for="price" class="form-label">Max Price (USD):</label>
-                <input type="number" id="price" name="price" class="form-control" min="0" required>
-            </div>
-
-            <div class="mb-3">
-                <!-- Country Input field -->
-                <label for="destination" class="form-label">Select Destination Country:</label>
-                <select name="countries" id="countries">
-                    <option value="US">United States</option>
-                    <option value="FR">France</option>
-                    <option value="BR">Brazil</option>
-                    <option value="IT">Italy</option>
-                    <option value="ES">Spain</option>
-                    <option value="GB">United Kingdom</option>
-                    <option value="JP">Japan</option>
-                </select>
-            </div>
-
-            <!-- Submit button -->
-            <button type="submit" class="btn btn-primary w-100">Find Flights</button>
-            <div id="loading" class="text-center mt-3" style="display: none;">
-                <div class="spinner-border text-primary" role="status">
-                    <span class="visually-hidden">Loading...</span>
-                </div>
-            <p>Searching flights...</p>
-            </div>
-        </form>
-
-        <!-- Display available flights if any -->
-        {% if flights %}
-            <h2 class="mt-5">Available Flights</h2>
-            <div class="row">
-                {% for flight in flights %}
-                    <div class="col-md-4">
-                        <div class="card mb-3">
-                            <div class="card-body">
-                                <!-- Flight details -->
-                                <h5 class="card-title">{{ flight.departure }} → {{ flight.destination }}</h5>
-                                <p class="card-text"><strong>Departure Date:</strong> {{ flight.departure_date.split('T')[0] }}</p>
-                                <p class="card-text"><strong>Departure Time:</strong> {{ flight.departure_date.split('T')[1] }}</p>
-                                <p class="card-text"><strong>Price:</strong> ${{ flight.price }}</p>
-                                <!-- If a valid booking URL is provided, display the button -->
+    <!-- Display available flights if any -->
+    {% if flights %}
+        <h2 class="mt-5">Available Flights</h2>
+        <div class="row">
+            {% for flight in flights %}
+                <div class="col-md-4">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <!-- Flight details -->
+                            <h5 class="card-title">{{ flight.departure }} → {{ flight.destination }}</h5>
+                            <p class="card-text"><strong>Departure Date:</strong> {{ flight.departure_date.split('T')[0] }}</p>
+                            <p class="card-text"><strong>Departure Time:</strong> {{ flight.departure_date.split('T')[1] }}</p>
+                            <p class="card-text"><strong>Price:</strong> ${{ flight.price }}</p>
+                            <!-- If a valid booking URL is provided, display the button -->
+                            <div>
                                 {% if flight.link %}
                                     <a href="{{ flight.link }}" class="btn btn-success" target="_blank">Book Now</a>
                                 {% else %}
                                     <button class="btn btn-secondary" disabled>Booking Not Available</button>
                                 {% endif %}
+                                <form method="POST" action="{{ url_for('views.add_deal', flight=flight) }}">
+                                    <button type="submit" display="center" class="btn save_btn">Save FlightDeal</button>
+                                </form>
                             </div>
                         </div>
                     </div>
-                {% endfor %}
-            </div>
-        {% endif %}
-    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
 
-    <!-- jQuery for handling airport input and dropdown -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            // Event listener for airport input field
-            $("#airport").on("input", function() {
-                let query = $(this).val().trim();
-                if (query.length > 2) {
-                    // Fetch airport suggestions
-                    $.get("{{ url_for('views.get_airports') }}", { q: query }, function(data) {
-                        let suggestions = data.map(airport => 
-                            `<a class="dropdown-item airport-item" data-code="${airport.code}">${airport.name} (${airport.code})</a>`
-                        ).join('');
-                        $("#airport-dropdown").html(suggestions).show();
-                    });
-                } else {
-                    $("#airport-dropdown").hide();
-                }
-            });
-
-            // Event listener for selecting an airport from the dropdown
-            $(document).on("click", ".airport-item", function() {
-                $("#airport").val($(this).text());
-                $("#airport").attr("data-code", $(this).attr("data-code"));
+<!-- jQuery for handling airport input and dropdown -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Event listener for airport input field
+        $("#airport").on("input", function() {
+            let query = $(this).val().trim();
+            if (query.length > 2) {
+                // Fetch airport suggestions
+                $.get("{{ url_for('views.get_airports') }}", { q: query }, function(data) {
+                    let suggestions = data.map(airport => 
+                        `<a class="dropdown-item airport-item" data-code="${airport.code}">${airport.name} (${airport.code})</a>`
+                    ).join('');
+                    $("#airport-dropdown").html(suggestions).show();
+                });
+            } else {
                 $("#airport-dropdown").hide();
-            });
-
-            // Hide dropdown when clicking outside
-            $(document).click(function(event) {
-                if (!$(event.target).closest("#airport, #airport-dropdown").length) {
-                    $("#airport-dropdown").hide();
-                }
-            });
-        // Handle form submission to show loading animation
-        $("form").on("submit", function() {
-            // Disable the submit button to prevent multiple submissions
-            $(this).find('button[type="submit"]').prop("disabled", true);
-            // Show the loading spinner
-            $("#loading").show();
+            }
         });
-    });
-    </script>
 
-    <!-- Bootstrap JS for additional functionality -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+        // Event listener for selecting an airport from the dropdown
+        $(document).on("click", ".airport-item", function() {
+            $("#airport").val($(this).text());
+            $("#airport").attr("data-code", $(this).attr("data-code"));
+            $("#airport-dropdown").hide();
+        });
+
+        // Hide dropdown when clicking outside
+        $(document).click(function(event) {
+            if (!$(event.target).closest("#airport, #airport-dropdown").length) {
+                $("#airport-dropdown").hide();
+            }
+        });
+    // Handle form submission to show loading animation
+    $("form").on("submit", function() {
+        // Disable the submit button to prevent multiple submissions
+        $(this).find('button[type="submit"]').prop("disabled", true);
+        // Show the loading spinner
+        $("#loading").show();
+    });
+});
+</script>
+
+<!-- Bootstrap JS for additional functionality -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+{% endblock %}
