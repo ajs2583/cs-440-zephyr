@@ -10,7 +10,7 @@ Zephyr is a web-based flight tracking application that helps spontaneous travele
 - **Scalable Architecture** – Designed to allow easy modifications and improvements over time.
 
 ## Tech Stack
-- **Frontend:** React.js (or other modern UI framework)
+- **Frontend:** React.js and Bootsrap HTML/Jinja (Flask)
 - **Backend:** Flask (Python)
 - **Database:** SQLite (for local testing) / PostgreSQL (for production)
 - **APIs:** Amadeus API (for flight data), Google Maps API (optional for visualization)
