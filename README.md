@@ -14,7 +14,7 @@ Zephyr is a web-based flight tracking application that helps spontaneous travele
 - **Backend:** Flask (Python)
 - **Database:** SQLite (for local testing) / PostgreSQL (for production)
 - **APIs:** Amadeus API (for flight data), Google Maps API (optional for visualization)
-- **Hosting:** Linode
+- **Hosting:** OnRender
 
 ## Project Structure
 ```
