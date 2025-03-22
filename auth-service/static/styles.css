@@ -1,0 +1,77 @@
+body {
+    font-family: Arial, sans-serif; /* Set the font family for the body */
+    background-color: #f4f4f4; /* Set the background color for the body */
+    text-align: center; /* Center align text */
+    margin: 20px; /* Add margin around the body */
+}
+
+.container {
+    background: white; /* Set the background color for the container */
+    padding: 20px; /* Add padding inside the container */
+    border-radius: 10px; /* Round the corners of the container */
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Add a subtle shadow to the container */
+    max-width: 500px; /* Set the maximum width of the container */
+    margin: auto; /* Center the container horizontally */
+}
+
+input, button {
+    display: block; /* Make input and button elements block-level */
+    width: 100%; /* Set the width to 100% */
+    margin: 10px 0; /* Add vertical margin */
+    padding: 10px; /* Add padding inside input and button elements */
+    font-size: 16px; /* Set the font size */
+}
+
+button {
+    background-color: #007bff; /* Set the background color for buttons */
+    color: white; /* Set the text color for buttons */
+    border: none; /* Remove the border */
+    cursor: pointer; /* Change the cursor to pointer on hover */
+}
+
+button:hover {
+    background-color: #0056b3; /* Change the background color on hover */
+}
+
+.suggestion {
+    padding: 10px; /* Add padding inside suggestion elements */
+    background: #ddd; /* Set the background color for suggestions */
+    margin: 2px 0; /* Add vertical margin */
+    cursor: pointer; /* Change the cursor to pointer on hover */
+}
+
+.suggestion:hover {
+    background: #ccc; /* Change the background color on hover */
+}
+
+/* Navbar */
+.navbar {
+    background-color: #327ba8; /* Main navbar color */
+    transition: background-color 0.3s ease-in-out;
+}
+
+.nav-link {
+    color: white !important;
+    font-size: 1.1em;
+    transition: color 0.3s ease-in-out;
+}
+
+/* Flash Messages */
+.alert-success {
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+    color: #155724;
+}
+
+.alert-danger {
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    color: #721c24;
+}
+
+.save_btn {
+    width: 200px;
+    margin: 0 auto;
+    background-color: #79baff; 
+    display: center;
+}

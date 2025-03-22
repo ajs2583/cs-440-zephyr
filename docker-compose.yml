@@ -1,0 +1,54 @@
+version: "3.8"
+services:
+  api-gateway:
+    build: ./api-gateway
+    ports:
+      - "5000:5000"
+    depends_on:
+      - auth-service
+      - order-service
+      - inventory-service
+    networks:
+      - microservices
+
+  auth-service:
+    build:
+      context: ./auth-service
+    container_name: auth-service
+    ports:
+      - "5001:5001"  # Expose port 5001 for Flask app (changed from 5000)
+    environment:
+      - DATABASE_URL=postgresql://auth_user:auth_password@db:5432/auth_db
+    depends_on:
+      - db  # Ensure db is available
+
+  inventory-service:
+    build: ./inventory-service
+    ports:
+      - "5002:5002"  # Expose port 5002 (changed from 5000)
+    networks:
+      - microservices
+
+  order-service:
+    build: ./order-service
+    ports:
+      - "5003:5003"  # Expose port 5003 (changed from 5000)
+    networks:
+      - microservices
+
+  db:
+    image: postgres:13
+    container_name: db
+    environment:
+      POSTGRES_USER: auth_user
+      POSTGRES_PASSWORD: auth_password
+      POSTGRES_DB: auth_db
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+networks:
+  microservices:
+    driver: bridge
+
+volumes:
+  db_data: {}  # Define the volume correctly

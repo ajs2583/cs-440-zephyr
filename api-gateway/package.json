@@ -1,0 +1,15 @@
+{
+    "name": "api-gateway",
+    "version": "1.0.0",
+    "description": "API Gateway for microservices",
+    "main": "gateway.js",
+    "dependencies": {
+      "express": "^4.17.1",
+      "http-proxy-middleware": "^2.0.0"
+    },
+    "scripts": {
+      "start": "node gateway.js"
+    },
+    "author": "",
+    "license": "ISC"
+  }

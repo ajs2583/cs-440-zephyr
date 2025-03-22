@@ -17,7 +17,7 @@ class Config:
     ! False = Server testing
     ? True = Local Testing
     """
-    USE_LOCAL_DB = False
+    USE_LOCAL_DB = True
     
     # If true use local 
     if USE_LOCAL_DB:
