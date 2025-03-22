@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, jsonify, redirect, flash
+from flask import Blueprint, render_template, request, jsonify, redirect, flash, Flask
 from .services import get_airport_suggestions, get_flight_deals
 from flask_login import login_required, current_user
 from .models import User, FlightSearch, FlightDeal
