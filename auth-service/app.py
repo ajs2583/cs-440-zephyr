@@ -10,6 +10,7 @@ app = Flask(__name__)
 # Database configuration
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'postgresql://auth_user:auth_password@db:5432/auth_db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.logger.info(f"Connecting to database at {app.config['SQLALCHEMY_DATABASE_URI']}")
 app.secret_key = os.getenv("SECRET_KEY", "fallback_key")
 
 # Initialize the database
