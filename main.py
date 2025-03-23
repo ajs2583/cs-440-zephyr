@@ -8,4 +8,5 @@ app = create_app()
 
 # If main starts, run the app with debugger on
 if __name__ == "__main__":
-    app.run(debug=DEBUG_OPTION)
+    app.run(debug=DEBUG_OPTION, host="0.0.0.0")
+    

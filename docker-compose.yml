@@ -6,8 +6,8 @@ services:
       - "5000:5000"
     depends_on:
       - auth-service
-      - order-service
-      - inventory-service
+      - flight-service
+      - saved-service
     networks:
       - microservices
 
@@ -22,19 +22,27 @@ services:
     depends_on:
       - db  # Ensure db is available
 
-  inventory-service:
-    build: ./inventory-service
+  flight-service:
+    build: ./flight-service
     ports:
       - "5002:5002"  # Expose port 5002 (changed from 5000)
+    environment:
+      - DATABASE_URL=postgresql://auth_user:auth_password@db:5432/flight_db
     networks:
       - microservices
+    depends_on:
+      - flightdb
 
-  order-service:
-    build: ./order-service
+  saved-service:
+    build: ./saved-service
     ports:
       - "5003:5003"  # Expose port 5003 (changed from 5000)
+    environment:
+      - DATABASE_URL=postgresql://auth_user:auth_password@db:5432/saved_db
     networks:
       - microservices
+    depends_on:
+      - saveddb
 
   db:
     image: postgres:13
@@ -44,7 +52,28 @@ services:
       POSTGRES_PASSWORD: auth_password
       POSTGRES_DB: auth_db
     volumes:
-      - db_data:/var/lib/postgresql/data
+      - db_data:/var/lib/postgresql/datadb
+  
+  flightdb:
+    image: postgres:13
+    container_name: flightdb
+    environment:
+      POSTGRES_USER: auth_user
+      POSTGRES_PASSWORD: auth_password
+      POSTGRES_DB: flight_db
+    volumes:
+      - db_data:/var/lib/postgresql/dataflightdb
+
+  saveddb:
+    image: postgres:13
+    container_name: saveddb
+    environment:
+      POSTGRES_USER: auth_user
+      POSTGRES_PASSWORD: auth_password
+      POSTGRES_DB: saved_db
+    volumes:
+      - db_data:/var/lib/postgresql/datasaveddb
+
 
 networks:
   microservices:
